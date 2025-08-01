@@ -8,11 +8,24 @@ export const protect = async (req: Request, res: Response, next: NextFunction) =
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as any;
+
     const user = await User.findById(decoded.id);
     if (!user || user.isBlocked) return res.status(401).json({ message: 'Unauthorized' });
+
     req.user = user;
+
+    // ✅ Log the user to the terminal
+    console.log('✅ Authenticated User:', {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      isBlocked: user.isBlocked
+    });
+
     next();
-  } catch {
+  } catch (err) {
+    console.error('❌ Token verification failed:', err);
     return res.status(401).json({ message: 'Invalid token' });
   }
 };

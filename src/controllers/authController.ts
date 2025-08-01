@@ -21,13 +21,27 @@ export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
   try {
     const user = await User.findOne({ email });
+
     if (!user || !(await user.matchPassword(password)))
       return res.status(401).json({ message: 'Invalid credentials' });
+
+    // ✅ Log to terminal
+    console.log('🔐 Login Success:', {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      isBlocked: user.isBlocked,
+    });
+
     res.json({
       token: generateToken(user._id.toString(), user.role),
       user: { id: user._id, name: user.name, role: user.role },
     });
-  } catch {
+
+  } catch (error) {
+    console.error('❌ Login failed:', error);
     res.status(500).json({ message: 'Login failed' });
   }
 };
+

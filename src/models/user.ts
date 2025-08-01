@@ -1,7 +1,9 @@
 import mongoose, { Document } from 'mongoose';
 import bcrypt from 'bcryptjs';
+import { Types } from 'mongoose';
 
 export interface IUser extends Document {
+  _id: Types.ObjectId;
   name: string;
   email: string;
   password: string;
