@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import db = require('./config/db');
 
-// import authRoutes from './routes/authRoutes';
+import authRoutes from './routes/authRoutes';
 
 dotenv.config();
 db.connectDB();
@@ -12,7 +12,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// app.use('/api/auth', authRoutes);
+app.use('/api/auth', authRoutes);
 
 app.get('/', (_, res) => res.send('Ride Booking API Running'));
 
