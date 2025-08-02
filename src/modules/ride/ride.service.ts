@@ -57,18 +57,69 @@ export class RideService {
     return ride;
   }
 
-//   static async getRideHistory(userId: string, role: string): Promise<IRide[]> {
-//     if (role === 'rider') {
-//       return RideModel.find({ rider: userId }).sort({ createdAt: -1 });
-//     } else if (role === 'driver') {
-//       return RideModel.find({ driver: userId }).sort({ createdAt: -1 });
-//     } else {
-//       // Admin can see all rides
-//       return RideModel.find().sort({ createdAt: -1 });
-//     }
-//   }
+  static async getRideHistory(userId: string, role: string): Promise<IRide[]> {
+    if (role === 'rider') {
+      return RideModel.find({ rider: userId }).sort({ createdAt: -1 });
+    } else if (role === 'driver') {
+      return RideModel.find({ driver: userId }).sort({ createdAt: -1 });
+    } else {
+      // Admin can see all rides
+      return RideModel.find().sort({ createdAt: -1 });
+    }
+  }
 
-//    
+  static async updateRideStatus(
+    rideId: string,
+    driverId: string,
+    newStatus: RideStatus
+  ): Promise<IRide> {
+    const ride = await RideModel.findById(rideId);
+    if (!ride) throw new Error('Ride not found');
+    if (!ride.driver || ride.driver.toString() !== driverId) {
+      throw new Error('Not authorized to update this ride');
+    }
+
+    const allowedTransitions: Record<RideStatus, RideStatus[]> = {
+      requested: ['accepted', 'canceled'],
+      accepted: ['picked_up', 'canceled'],
+      picked_up: ['in_transit', 'canceled'],
+      in_transit: ['completed', 'canceled'],
+      completed: [],
+      canceled: [],
+    };
+
+    if (!allowedTransitions[ride.status].includes(newStatus)) {
+      throw new Error(`Cannot change status from ${ride.status} to ${newStatus}`);
+    }
+
+    // Update timestamps accordingly
+    switch (newStatus) {
+      case 'accepted':
+        ride.status = 'accepted';
+        ride.timestamps.acceptedAt = new Date();
+        break;
+      case 'picked_up':
+        ride.status = 'picked_up';
+        ride.timestamps.pickedUpAt = new Date();
+        break;
+      case 'in_transit':
+        ride.status = 'in_transit';
+        ride.timestamps.inTransitAt = new Date();
+        break;
+      case 'completed':
+        ride.status = 'completed';
+        ride.timestamps.completedAt = new Date();
+        break;
+      case 'canceled':
+        ride.status = 'canceled';
+        ride.timestamps.canceledAt = new Date();
+        ride.canceledBy = 'driver';
+        break;
+    }
+
+    await ride.save();
+    return ride;
+  }
 
   static async assignDriverToRide(rideId: string, driverId: string) {
     const ride = await RideModel.findById(rideId);
