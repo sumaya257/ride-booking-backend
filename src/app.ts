@@ -1,21 +1,33 @@
 import express from 'express';
-import cors from "cors";
+import cors from 'cors';
 import dotenv from 'dotenv';
-import db = require('./config/db');
+import { connectDB } from './config/db';
 import authRoutes from './modules/auth/auth.routes';
+import userRoutes from './modules/user/user.routes';
+import driverRoutes from './modules/driver/driver.routes';
 import rideRoutes from './modules/ride/ride.routes';
+import { errorHandler } from './middlewares/error.middleware';
 
 dotenv.config();
-db.connectDB();
 
 const app = express();
+
 app.use(cors());
 app.use(express.json());
 
+// Connect to DB
+connectDB(process.env.MONGO_URI || 'mongodb://localhost:27017/ride-booking');
+
+// Routes
+app.get('/', (req, res) => {
+  res.send('🚗 Ride Booking API is running!');
+});
 app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/drivers', driverRoutes);
 app.use('/api/rides', rideRoutes);
 
-app.get('/', (_, res) => res.send('Ride Booking API Running'));
+// Error handler
+app.use(errorHandler);
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server on port ${PORT}`));
+export default app;
