@@ -19,4 +19,13 @@ router.patch(
 // Admin gets all users or by role
 router.get('/', authenticateJWT, authorizeRoles('admin'), UserController.getAllUsers);
 
+// admin get report
+router.get(
+  '/report',
+  authenticateJWT,
+  authorizeRoles('admin'),
+  UserController.generateReport
+);
+
+
 export default router;

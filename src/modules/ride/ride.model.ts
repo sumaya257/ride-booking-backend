@@ -29,6 +29,7 @@ const RideSchema = new Schema<IRide>(
       completedAt: Date,
       canceledAt: Date,
     },
+    distance: { type: Number, required: false },
     fare: { type: Number, default: 0 },
     canceledBy: { type: String, enum: ['rider', 'driver', null], default: null },
   },

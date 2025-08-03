@@ -22,4 +22,13 @@ export class UserController {
       res.status(400).json({ message: err.message });
     }
   }
+
+  static async generateReport(req: Request, res: Response) {
+    try {
+      const report = await UserService.generateReport();
+      res.status(200).json({ message: 'Report generated', report });
+    } catch (error) {
+      res.status(500).json({ message: 'Failed to generate report', error });
+    }
+  }
 }

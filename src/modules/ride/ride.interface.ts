@@ -24,6 +24,7 @@ export interface IRide extends Document {
     completedAt?: Date;
     canceledAt?: Date;
   };
+  distance?: number;
   fare?: number;
   canceledBy?: 'rider' | 'driver' | null;
 }
