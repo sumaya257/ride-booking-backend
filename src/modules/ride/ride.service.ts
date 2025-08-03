@@ -176,6 +176,13 @@ static async requestRide(
 
     return { totalEarnings, completedRides };
   }
+  
+  static async getPendingRides() {
+  return RideModel.find({ status: 'requested' })
+    .populate('rider', 'name email')
+    .sort({ createdAt: -1 }); // Latest first
+}
+
 }
 
 

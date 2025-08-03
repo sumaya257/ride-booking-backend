@@ -84,4 +84,14 @@ export class RideController {
     res.status(400).json({ message: err.message });
   }
 }
+
+// Driver views all pending ride requests
+static async getPendingRides(req: Request, res: Response) {
+  try {
+    const rides = await RideService.getPendingRides();
+    res.status(200).json({ rides });
+  } catch (err: any) {
+    res.status(500).json({ message: err.message || 'Failed to fetch pending rides' });
+  }
+}
 }

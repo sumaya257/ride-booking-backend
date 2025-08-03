@@ -53,4 +53,13 @@ router.get(
   RideController.getEarningsHistory
 );
 
+// Driver views pending ride requests
+router.get(
+  '/pending-rides',
+  authenticateJWT,
+  authorizeRoles('driver'),
+  RideController.getPendingRides
+);
+
+
 export default router;
