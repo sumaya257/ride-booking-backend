@@ -2,31 +2,47 @@ import { RideModel } from './ride.model';
 import { IRide, RideStatus } from './ride.interface';
 import { Types } from 'mongoose';
 import { UserModel } from '../user/user.model';
+import { calculateDistanceInKm } from '../../utils/calculateDistance';
+import { calculateFare } from '../../utils/calculateFare';
 
 export class RideService {
-  static async requestRide(
-    riderId: string,
-    pickupLocation: { address: string; lat: number; lng: number },
-    destinationLocation: { address: string; lat: number; lng: number }
-  ): Promise<IRide> {
-    // Check if rider has active ride
-    const activeRide = await RideModel.findOne({
-      rider: new Types.ObjectId(riderId),
-      status: { $in: ['requested', 'accepted', 'picked_up', 'in_transit'] },
-    });
-    if (activeRide) throw new Error('You already have an active ride');
+static async requestRide(
+  riderId: string,
+  pickupLocation: { address: string; lat: number; lng: number },
+  destinationLocation: { address: string; lat: number; lng: number }
+): Promise<IRide> {
+  // Check if rider has active ride
+  const activeRide = await RideModel.findOne({
+    rider: new Types.ObjectId(riderId),
+    status: { $in: ['requested', 'accepted', 'picked_up', 'in_transit'] },
+  });
+  if (activeRide) throw new Error('You already have an active ride');
 
-    const ride = new RideModel({
-      rider: new Types.ObjectId(riderId),
-      pickupLocation,
-      destinationLocation,
-      status: 'requested',
-      timestamps: { requestedAt: new Date() },
-    });
+  //calculate distance (in km)
+  const distance = calculateDistanceInKm(
+    pickupLocation.lat,
+    pickupLocation.lng,
+    destinationLocation.lat,
+    destinationLocation.lng
+  );
 
-    await ride.save();
-    return ride;
-  }
+  //calculate fare
+  const fare = calculateFare(distance);
+
+  //Create ride with distance and fare
+  const ride = new RideModel({
+    rider: new Types.ObjectId(riderId),
+    pickupLocation,
+    destinationLocation,
+    distance, // save distance
+    fare,     // save fare
+    status: 'requested',
+    timestamps: { requestedAt: new Date() },
+  });
+
+  await ride.save();
+  return ride;
+}
 
   static async cancelRide(rideId: string, userId: string, userRole: string): Promise<IRide | null> {
     const ride = await RideModel.findById(rideId);
