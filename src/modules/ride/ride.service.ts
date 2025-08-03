@@ -139,4 +139,20 @@ export class RideService {
     await ride.save();
     return ride;
   }
+    
+    // get earning history
+    static async getEarningsHistory(driverId: string) {
+    // Fetch completed rides with fare info
+    const completedRides = await RideModel.find({
+      driver: driverId,
+      status: 'completed',
+    }).select('fare pickupLocation destinationLocation timestamps.completedAt');
+
+    // Calculate total earnings
+    const totalEarnings = completedRides.reduce((sum, ride) => sum + (ride.fare || 0), 0);
+
+    return { totalEarnings, completedRides };
+  }
 }
+
+

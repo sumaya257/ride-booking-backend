@@ -42,4 +42,12 @@ router.patch(
   RideController.updateRideStatus
 );
 
+// driver get total earning
+router.get(
+  '/earnings',
+  authenticateJWT,
+  authorizeRoles('driver'),
+  RideController.getEarningsHistory
+);
+
 export default router;
