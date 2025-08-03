@@ -68,6 +68,7 @@ npm run dev
 | PATCH  | `/api/rides/:id/status`    | Update ride status              |
 | GET    | `/api/rides/all-rides`     | Admin views all rides           |
 | GET    | `/api/rides/earnings`      | Driver views ride earnings      |
+| GET    | `/api/rides/pending-rides` | Driver view pending ride request|
 
 ---
 
@@ -76,34 +77,44 @@ npm run dev
 | Method | Endpoint                    | Description                |
 | ------ | --------------------------  | -------------------------- |
 | PATCH  | `/api/drivers/availability` | Set online/offline status  |
-| GET    | `/api/drivers/requests`     | View pending ride requests |
+| PATCH  | `/api/drivers/approve/:id`  | Admin approve the driver   |
 
 ---
 
-#### 👮‍♂️ Admin Endpoints
+#### 👮‍♂️ user Endpoints
 
 | Method | Endpoint                        | Description                         |
 | ------ | ------------------------------- | ----------------------------------- |
-| GET    | `/api/admin/users`              | View all users                      |
-| PATCH  | `/api/admin/driver/:id/approve` | Approve or suspend a driver         |
-| PATCH  | `/api/admin/user/:id/block`     | Block or unblock a user             |
-| GET    | `/api/admin/report`             | Generate ride & user summary report |
+| GET    | `/api/users`                    | Admin views all users               |
+| GET    | `/api/users?role=rider`         | Admin views users by role           |
+| PATCH  | `/api/users/block/:id`          | Admin block or unblock a user       |
+| GET    | `/api/users/report`             | Generate ride & user summary report |
 
 ---
 
-### 📊 Example Response: `/api/admin/report`
+### 📊 Example Response: `/api/users/report`
 
 ```json
 {
-  "users": { "total": 120, "blocked": 10 },
-  "riders": { "total": 70 },
-  "drivers": { "total": 45 },
-  "rides": {
-    "total": 200,
-    "pending": 12,
-    "active": 5,
-    "completed": 183
-  }
+    "message": "Report generated",
+    "report": {
+        "users": {
+            "total": 5,
+            "blocked": 0
+        },
+        "riders": {
+            "total": 4
+        },
+        "drivers": {
+            "total": 1
+        },
+        "rides": {
+            "total": 5,
+            "pending": 2,
+            "active": 0,
+            "completed": 1
+        }
+    }
 }
 ```
 
@@ -127,13 +138,14 @@ src/
 ├── modules/
 │   ├── auth/
 │   ├── user/
-│   ├── rider/
+│   ├── ride/
 │   ├── driver/
-│   └── ride/
+│   └── user/
 ├── middlewares/
 ├── config/
 ├── utils/
-├── app.ts
+├── app.ts/
+├── server.ts
 ```
 
 ---
@@ -141,9 +153,3 @@ src/
 ### 📪 Contact
 
 For any issues or contributions, please open an issue or PR on the repo.
-
----
-
-### 📝 License
-
-This project is licensed under the MIT License.
