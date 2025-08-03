@@ -1,4 +1,4 @@
-# Ride Booking API
+# 🚘 Ride Booking API
 
 ### ✨ **Project Overview**
 
@@ -33,10 +33,13 @@ npm install
 
 ```env
 PORT=5000
-DATABASE_URI=your database uri
+DATABASE_URI=your_database_uri
 JWT_SECRET=your_jwt_secret
 ```
-####  admin email - admin@example.com , pass - 123456
+
+✅ **Admin credentials:**
+**Email:** `admin@example.com`
+**Password:** `123456`
 
 #### 4. Run the development server
 
@@ -48,90 +51,156 @@ npm run dev
 
 ### 📒 **API Endpoints Summary**
 
+---
+
 #### ⛔️ Authentication
 
-| Method | Endpoint             | Description                 |
-| ------ | -------------------- | --------------------------- |
-| POST   | `/api/auth/register` | Register a new user         |
-| POST   | `/api/auth/login`    | Login and receive JWT token |
+| Method | Endpoint             | Description            |
+| ------ | -------------------- | ---------------------- |
+| POST   | `/api/auth/register` | Register a new user    |
+| POST   | `/api/auth/login`    | Login user and get JWT |
+
+✅ **Register Body**
+
+```json
+{
+  "name": "rider",
+  "email": "rider@example.com",
+  "password": "123456",
+  "role": "rider"
+}
+```
+
+✅ **Login Body**
+
+```json
+{
+  "email": "rider@example.com",
+  "password": "123456"
+}
+```
 
 ---
 
 #### 🚗 Rides Endpoints
 
 | Method | Endpoint                   | Description                     |
-| ------ | ------------------------   | ------------------------------- |
-| POST   | `/api/rides/request`       | Request a ride                  |
+| ------ | -------------------------- | ------------------------------- |
+| POST   | `/api/rides/request`       | Rider requests a ride           |
 | PATCH  | `/api/rides/:id/cancel`    | Cancel ride (before acceptance) |
-| GET    | `/api/rides/me`            | View ride history               |
-| PATCH  | `/api/rides/:id/accept`    | Driver accept a ride            |
-| PATCH  | `/api/rides/:id/status`    | Update ride status              |
+| GET    | `/api/rides/me`            | Rider views ride history        |
+| PATCH  | `/api/rides/:id/accept`    | Driver accepts a ride           |
+| PATCH  | `/api/rides/:id/status`    | Driver updates ride status      |
 | GET    | `/api/rides/all-rides`     | Admin views all rides           |
-| GET    | `/api/rides/earnings`      | Driver views ride earnings      |
-| GET    | `/api/rides/pending-rides` | Driver view pending ride request|
+| GET    | `/api/rides/earnings`      | Driver views earnings           |
+| GET    | `/api/rides/pending-rides` | Driver gets pending ride list   |
+
+🔸 **Authorization Header for all** (Add to Header):
+
+```
+Authorization: Bearer <your_token>
+```
+
+✅ **Request a Ride**
+
+```json
+{
+  "pickupLocation": {
+    "address": "Uttara",
+    "lat": 23.7465,
+    "lng": 90.3760
+  },
+  "destinationLocation": {
+    "address": "Dhanmondi",
+    "lat": 23.7925,
+    "lng": 90.4078
+  }
+}
+```
+
+✅ **Update Ride Status**
+
+```json
+{
+  "status": "completed"
+}
+```
 
 ---
 
 #### 🚖 Driver Endpoints
 
-| Method | Endpoint                    | Description                |
-| ------ | --------------------------  | -------------------------- |
-| PATCH  | `/api/drivers/availability` | Set online/offline status  |
-| PATCH  | `/api/drivers/approve/:id`  | Admin approve the driver   |
+| Method | Endpoint                    | Description                    |
+| ------ | --------------------------- | ------------------------------ |
+| PATCH  | `/api/drivers/availability` | Set driver online/offline      |
+| PATCH  | `/api/drivers/approve/:id`  | Admin approves/suspends driver |
 
----
-
-#### 👮‍♂️ user Endpoints
-
-| Method | Endpoint                        | Description                         |
-| ------ | ------------------------------- | ----------------------------------- |
-| GET    | `/api/users`                    | Admin views all users               |
-| GET    | `/api/users?role=rider`         | Admin views users by role           |
-| PATCH  | `/api/users/block/:id`          | Admin block or unblock a user       |
-| GET    | `/api/users/report`             | Generate ride & user summary report |
-
----
-
-### 📊 Example Response: `/api/users/report`
+✅ **Set Availability**
 
 ```json
 {
-    "message": "Report generated",
-    "report": {
-        "users": {
-            "total": 5,
-            "blocked": 0
-        },
-        "riders": {
-            "total": 4
-        },
-        "drivers": {
-            "total": 1
-        },
-        "rides": {
-            "total": 5,
-            "pending": 2,
-            "active": 0,
-            "completed": 1
-        }
-    }
+  "online": true
 }
 ```
+
+✅ **Approve/Suspend Driver (Admin only)**
+
+```json
+{
+  "approve": true
+}
+```
+
+---
+
+#### 👮‍♂️ User/Admin Endpoints
+
+| Method | Endpoint                | Description                   |
+| ------ | ----------------------- | ----------------------------- |
+| GET    | `/api/users`            | Admin views all users         |
+| GET    | `/api/users?role=rider` | Admin views users by role     |
+| PATCH  | `/api/users/block/:id`  | Admin blocks/unblocks user    |
+| GET    | `/api/users/report`     | Admin generates system report |
+
+✅ **Report Example Response**
+
+```json
+{
+  "message": "Report generated",
+  "report": {
+    "users": { "total": 5, "blocked": 0 },
+    "riders": { "total": 4 },
+    "drivers": { "total": 1 },
+    "rides": {
+      "total": 5,
+      "pending": 2,
+      "active": 0,
+      "completed": 1
+    }
+  }
+}
+```
+
+---
+
+### 📊 Postman API Collection
+
+🔗 [Click here to open Postman Collection](https://sumaya-9533077.postman.co/workspace/Sumaya's-Workspace~9a4331e1-d5fe-40eb-8c94-17aefaca48cf/collection/46082450-c70a8fa9-6186-48f7-a896-0e4087a28593?action=share&creator=46082450)
 
 ---
 
 ### 💪 Tech Stack
 
 * **Node.js** / **Express.js**
-* **MongoDB** with **Mongoose**
-* **JWT** authentication
+* **MongoDB** + **Mongoose**
+* **JWT Authentication**
 * **Bcrypt** for password hashing
 * **TypeScript**
-* **Express-validator** for request validation
+* **Express-validator**
 
 ---
 
-### 📅 Project Structure
+### 📁 Project Structure
 
 ```
 src/
@@ -140,16 +209,10 @@ src/
 │   ├── user/
 │   ├── ride/
 │   ├── driver/
-│   └── user/
 ├── middlewares/
 ├── config/
 ├── utils/
-├── app.ts/
+├── app.ts
 ├── server.ts
 ```
 
----
-
-### 📪 Contact
-
-For any issues or contributions, please open an issue or PR on the repo.

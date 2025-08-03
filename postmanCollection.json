@@ -1,0 +1,656 @@
+{
+	"info": {
+		"_postman_id": "c70a8fa9-6186-48f7-a896-0e4087a28593",
+		"name": "Ride Booking API",
+		"description": "Postman collection for testing authentication endpoints of Ride Booking API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "46082450",
+		"_collection_link": "https://sumaya-9533077.postman.co/workspace/Sumaya's-Workspace~9a4331e1-d5fe-40eb-8c94-17aefaca48cf/collection/46082450-c70a8fa9-6186-48f7-a896-0e4087a28593?action=share&source=collection_link&creator=46082450"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"rider\",\n  \"email\": \"rider@example.com\",\n  \"password\": \"123456\",\n  \"role\": \"rider\"\n}"
+						},
+						"url": {
+							"raw": "https://ride-booking-api-three.vercel.app/api/auth/register",
+							"protocol": "https",
+							"host": [
+								"ride-booking-api-three",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"rider1@example.com\",\n  \"password\": \"123456\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ride",
+			"item": [
+				{
+					"name": "Rider request ride",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OGQwNGM0MGQ0MzNiOGE2MGM3YzZlMyIsInJvbGUiOiJyaWRlciIsImlhdCI6MTc1NDExNzQ5OSwiZXhwIjoxNzU0MjAzODk5fQ.DaJtZg-dWxunfMXp6QHhC771GyuLGGat2YpN5yxgsbQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"pickupLocation\": {\r\n    \"address\": \"Uttara\",\r\n    \"lat\": 23.7465,\r\n    \"lng\": 90.3760\r\n  },\r\n  \"destinationLocation\": {\r\n    \"address\": \"dhanmondi\",\r\n    \"lat\": 23.7925,\r\n    \"lng\": 90.4078\r\n  }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/rides/request",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"rides",
+								"request"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ride cancel",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OGQwOGU0OTQ1YTUyMjFmZDdjNDliNSIsInJvbGUiOiJyaWRlciIsImlhdCI6MTc1NDExNjY3MCwiZXhwIjoxNzU0MjAzMDcwfQ.8qtv0yL6hqPxZd_2gqqu91arwgQdkGhRcE967rvxwnA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"pickupLocation\": {\r\n    \"address\": \"Uttara\",\r\n    \"lat\": 23.7465,\r\n    \"lng\": 90.3760\r\n  },\r\n  \"destinationLocation\": {\r\n    \"address\": \"dhanmondi\",\r\n    \"lat\": 23.7925,\r\n    \"lng\": 90.4078\r\n  }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/rides/688daafe41062f4c2d3f5e0c/cancel",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"rides",
+								"688daafe41062f4c2d3f5e0c",
+								"cancel"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Rider ride history",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OGQwOGU0OTQ1YTUyMjFmZDdjNDliNSIsInJvbGUiOiJyaWRlciIsImlhdCI6MTc1NDExNjY3MCwiZXhwIjoxNzU0MjAzMDcwfQ.8qtv0yL6hqPxZd_2gqqu91arwgQdkGhRcE967rvxwnA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"pickupLocation\": {\r\n    \"address\": \"Uttara\",\r\n    \"lat\": 23.7465,\r\n    \"lng\": 90.3760\r\n  },\r\n  \"destinationLocation\": {\r\n    \"address\": \"dhanmondi\",\r\n    \"lat\": 23.7925,\r\n    \"lng\": 90.4078\r\n  }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/rides/688db25741062f4c2d3f5e12/cancel",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"rides",
+								"688db25741062f4c2d3f5e12",
+								"cancel"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Driver accept ride",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OGRiNjE5NDEwNjJmNGMyZDNmNWUxZCIsInJvbGUiOiJkcml2ZXIiLCJpYXQiOjE3NTQxMTg3NzIsImV4cCI6MTc1NDIwNTE3Mn0.Ygnr6-x40STDLtKmMfuI5xCb4x_ICEQpxhyZynhSvxg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"online\": true }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/rides/688daafe41062f4c2d3f5e0c/accept",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"rides",
+								"688daafe41062f4c2d3f5e0c",
+								"accept"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Driver update ride status",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OGRiNjE5NDEwNjJmNGMyZDNmNWUxZCIsInJvbGUiOiJkcml2ZXIiLCJpYXQiOjE3NTQxMTg3NzIsImV4cCI6MTc1NDIwNTE3Mn0.Ygnr6-x40STDLtKmMfuI5xCb4x_ICEQpxhyZynhSvxg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"online\": true }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/drivers/availability",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"drivers",
+								"availability"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Admin views all rides",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OGRjM2NlNDEwNjJmNGMyZDNmNWUyNiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1NDEyMTE4MSwiZXhwIjoxNzU0MjA3NTgxfQ._XwnSBXgeiU0S4UhKvuBM95IF0HWcNysNMb53G9eBLM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"approve\": true }"
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Driver Views Earnings",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OGRiNjE5NDEwNjJmNGMyZDNmNWUxZCIsInJvbGUiOiJkcml2ZXIiLCJpYXQiOjE3NTQxMTg3NzIsImV4cCI6MTc1NDIwNTE3Mn0.Ygnr6-x40STDLtKmMfuI5xCb4x_ICEQpxhyZynhSvxg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"status\": \"completed\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/rides/688db25741062f4c2d3f5e12/status",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"rides",
+								"688db25741062f4c2d3f5e12",
+								"status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Driver gets pending rides",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OGRiNjE5NDEwNjJmNGMyZDNmNWUxZCIsInJvbGUiOiJkcml2ZXIiLCJpYXQiOjE3NTQyMTAwNDgsImV4cCI6MTc1NDI5NjQ0OH0.vFYiRVioGM_1Eofmgj6uMsFHQQWQYN-UtJFNo4acU20",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"status\": \"completed\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://ride-booking-api-three.vercel.app/api/rides/pending-rides",
+							"protocol": "https",
+							"host": [
+								"ride-booking-api-three",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"rides",
+								"pending-rides"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "driver",
+			"item": [
+				{
+					"name": "Driver Sets Availability",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OGRiNjE5NDEwNjJmNGMyZDNmNWUxZCIsInJvbGUiOiJkcml2ZXIiLCJpYXQiOjE3NTQyMTAwNDgsImV4cCI6MTc1NDI5NjQ0OH0.vFYiRVioGM_1Eofmgj6uMsFHQQWQYN-UtJFNo4acU20",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"online\": true }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://ride-booking-api-three.vercel.app/api/drivers/availability",
+							"protocol": "https",
+							"host": [
+								"ride-booking-api-three",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"drivers",
+								"availability"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Admin approve or suspend the driver",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OGRjM2NlNDEwNjJmNGMyZDNmNWUyNiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1NDEyMTE4MSwiZXhwIjoxNzU0MjA3NTgxfQ._XwnSBXgeiU0S4UhKvuBM95IF0HWcNysNMb53G9eBLM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"approve\": true }"
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/drivers/approve/688db61941062f4c2d3f5e1d",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"drivers",
+								"approve",
+								"688db61941062f4c2d3f5e1d"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "Admin Views All Users",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OGRjM2NlNDEwNjJmNGMyZDNmNWUyNiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1NDEyMTE4MSwiZXhwIjoxNzU0MjA3NTgxfQ._XwnSBXgeiU0S4UhKvuBM95IF0HWcNysNMb53G9eBLM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"approve\": true }"
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/drivers/approve/688db61941062f4c2d3f5e1d",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"drivers",
+								"approve",
+								"688db61941062f4c2d3f5e1d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Admin views user by role",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OGRjM2NlNDEwNjJmNGMyZDNmNWUyNiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1NDEyMTE4MSwiZXhwIjoxNzU0MjA3NTgxfQ._XwnSBXgeiU0S4UhKvuBM95IF0HWcNysNMb53G9eBLM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"approve\": true }"
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/users?role=rider",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"users"
+							],
+							"query": [
+								{
+									"key": "role",
+									"value": "rider"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Admin get the report",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OGRjM2NlNDEwNjJmNGMyZDNmNWUyNiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1NDEyMTE4MSwiZXhwIjoxNzU0MjA3NTgxfQ._XwnSBXgeiU0S4UhKvuBM95IF0HWcNysNMb53G9eBLM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"approve\": true }"
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/users?role=rider",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"users"
+							],
+							"query": [
+								{
+									"key": "role",
+									"value": "rider"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Admin Blocks/Unblocks User",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
