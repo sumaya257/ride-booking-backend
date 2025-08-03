@@ -29,6 +29,9 @@ router.patch('/:id/cancel', authenticateJWT, authorizeRoles('rider', 'driver'), 
 // Rider or driver views their rides
 router.get('/me', authenticateJWT, authorizeRoles('rider', 'driver'), RideController.getRideHistory);
 
+// Admin views all rides
+router.get('/all-rides', authenticateJWT, authorizeRoles('admin'), RideController.getAllRides);
+
 // Driver accepts a ride
 router.patch('/:id/accept', authenticateJWT, authorizeRoles('driver'), RideController.acceptRide);
 

@@ -39,6 +39,16 @@ export class RideController {
     }
   }
 
+  // admin get all rides
+  static async getAllRides(req: Request, res: Response) {
+    try {
+      const rides = await RideService.getAllRides();
+      res.status(200).json({ rides });
+    } catch (error: any) {
+      res.status(500).json({ message: error.message || 'Failed to fetch rides' });
+    }
+  }
+
   // Driver updates the ride status
   static async updateRideStatus(req: Request, res: Response) {
     try {

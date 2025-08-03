@@ -84,6 +84,13 @@ static async requestRide(
     }
   }
 
+  static async getAllRides() {
+    return RideModel.find()
+      .populate('rider', 'name email')   //  rider info
+      .populate('driver', 'name email')  //  driver info
+      .sort({ createdAt: -1 });          // Latest rides first
+  }
+
   static async updateRideStatus(
     rideId: string,
     driverId: string,
